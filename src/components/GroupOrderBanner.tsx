@@ -77,6 +77,7 @@ export const GroupOrderBanner: React.FC<Props> = ({
         </div>
 
         {/* Right: Actions & Group Total */}
+        <div className="group-banner-right">
           <button
             type="button"
             className="banner-action-btn banner-add-friend-btn"
@@ -92,7 +93,7 @@ export const GroupOrderBanner: React.FC<Props> = ({
             onClick={copyInvite}
             title={`Copy Group ID (${session.id || session.tableCode}) to share with friends`}
           >
-            {copied ? "✓ Copied!" : `📋 Copy ID (${session.id || session.tableCode})`}
+            {copied ? "✓ Copied!" : `📋 Copy ID`}
           </button>
 
           <button
@@ -101,7 +102,7 @@ export const GroupOrderBanner: React.FC<Props> = ({
             onClick={onOpenBill}
             title="View group breakdown and total bill"
           >
-            <span>Group Bill:</span>
+            <span>Bill:</span>
             <strong>₹{grandTotal.toFixed(2)}</strong>
             <span className="banner-bill-count">({totalItemCount})</span>
           </button>
@@ -118,6 +119,7 @@ export const GroupOrderBanner: React.FC<Props> = ({
           >
             <span>🚪 Exit</span>
           </button>
+        </div>
       </div>
     </div>
   );

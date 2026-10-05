@@ -906,7 +906,8 @@ input {
 /* ============================================================
    MODAL
    ============================================================ */
-.modal-overlay {
+.modal-overlay,
+.modal-backdrop {
   position: fixed;
   inset: 0;
   background: rgba(15, 23, 42, 0.5);
@@ -4355,24 +4356,564 @@ input {
   flex-wrap: wrap;
 }
 
-@media (max-width: 640px) {
-  .group-bill-card {
-    padding: 18px 14px;
+/* ============================================================
+   COMPREHENSIVE MOBILE RESPONSIVE ENHANCEMENTS
+   ============================================================ */
+
+/* Mobile Touch & iOS Form Zoom Fix (font-size >= 16px) */
+@media (max-width: 768px) {
+  input,
+  select,
+  textarea,
+  .form-input,
+  .auth-input,
+  .starter-input {
+    font-size: 16px !important;
   }
-  .bill-card-title {
-    font-size: 1.4rem;
+
+  button,
+  .btn,
+  .court-card,
+  .menu-row,
+  .member-chip {
+    -webkit-tap-highlight-color: transparent;
   }
-  .bill-card-header-actions {
-    width: 100%;
-    justify-content: flex-start;
+
+  .main {
+    padding: 16px 12px calc(90px + env(safe-area-inset-bottom, 0px));
   }
-  .bill-bottom-actions {
+}
+
+/* Tablet & Mobile Screens <= 768px */
+@media (max-width: 768px) {
+  /* Real-Time Floating / Sticky Group Order Banner */
+  .group-order-banner {
+    position: static;
+    border-radius: 0;
+    margin-bottom: 8px;
+  }
+
+  .group-banner-inner {
+    padding: 10px 14px;
+    gap: 10px;
     flex-direction: column;
     align-items: stretch;
   }
+
+  .group-banner-left {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .banner-members-chips {
+    overflow-x: auto;
+    max-width: 100%;
+    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .group-banner-right {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .banner-action-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    min-height: 38px;
+    text-align: center;
+  }
+
+  /* Court Cards on Home Dashboard */
+  .home-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .court-card {
+    padding: 18px 16px;
+    gap: 14px;
+  }
+
+  .court-delete-btn {
+    opacity: 0.75 !important;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Shop Menu Page */
+  .menu-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .menu-header-info {
+    gap: 12px;
+  }
+
+  .menu-header-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .menu-header-buttons .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 14px;
+  }
+
+  .menu-table-head {
+    display: none;
+  }
+
+  .menu-row {
+    grid-template-columns: 28px 1fr auto;
+    grid-template-rows: auto auto;
+    padding: 12px 14px;
+    gap: 8px 10px;
+  }
+
+  .menu-details {
+    grid-column: 2 / 3;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .menu-name {
+    white-space: normal;
+    word-break: break-word;
+    font-size: 0.92rem;
+  }
+
+  .menu-counter {
+    grid-column: 3 / 4;
+    grid-row: 1;
+  }
+
+  .counter-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.15rem;
+  }
+
+  .counter-value {
+    min-width: 24px;
+    font-size: 0.95rem;
+  }
+
+  .menu-subtotal {
+    grid-column: 2 / 3;
+    grid-row: 2;
+    text-align: left;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .menu-actions {
+    grid-column: 3 / 4;
+    grid-row: 2;
+    justify-content: flex-end;
+  }
+
+  .btn-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* Sticky Cart / Order Summary Bar */
+  .order-summary {
+    padding: 0 10px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .order-summary-inner {
+    padding: 12px 14px;
+    border-radius: 16px;
+    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .order-summary-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .order-total-group-box {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .view-group-bill-btn {
+    flex: 1;
+    text-align: center;
+    padding: 9px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Group Order Page Layout */
+  .group-page-container {
+    padding: 12px 8px 30px;
+  }
+
+  .group-page-header {
+    padding: 16px 14px;
+    border-radius: 14px;
+    gap: 12px;
+  }
+
+  .group-page-title {
+    font-size: 1.35rem;
+  }
+
+  .group-header-actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .group-header-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .group-id-hero-card {
+    padding: 16px 14px;
+    border-radius: 14px;
+  }
+
+  .hero-code-val {
+    font-size: 1.45rem;
+    letter-spacing: 2px;
+    word-break: break-all;
+  }
+
+  .group-id-actions {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .group-id-actions button {
+    width: 100%;
+  }
+
+  .add-friend-form {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .add-friend-form .btn {
+    width: 100%;
+  }
+
+  .group-tab-switch {
+    width: 100%;
+  }
+
+  .group-tab-btn {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+
+  /* Modals on Mobile */
+  .modal-overlay,
+  .modal-backdrop {
+    padding: 10px;
+    align-items: center;
+  }
+
+  .modal-box {
+    width: 100%;
+    max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: var(--radius-lg);
+  }
+
+  .modal-header {
+    padding: 16px 18px 0;
+  }
+
+  .modal-form {
+    padding: 16px 18px 20px;
+  }
+
+  .demo-chips-grid {
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    gap: 6px;
+  }
+}
+
+/* Mobile Screens <= 640px */
+@media (max-width: 640px) {
+  /* Navbar */
+  .navbar {
+    padding: 0 12px;
+    height: 58px;
+  }
+
+  .navbar-left {
+    gap: 6px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .navbar-brand {
+    padding: 4px;
+    gap: 6px;
+  }
+
+  .navbar-logo {
+    font-size: 1.3rem;
+  }
+
+  .navbar-title {
+    font-size: 1.12rem;
+  }
+
+  .navbar-crumb {
+    font-size: 0.78rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 130px;
+  }
+
+  .crumb-home {
+    display: none;
+  }
+
+  .crumb-sep:first-of-type {
+    display: none;
+  }
+
+  .crumb-current {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .navbar-right {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .btn-nav-group {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    gap: 5px;
+  }
+
+  .user-dropdown-menu {
+    right: 0;
+    left: auto;
+    width: min(300px, calc(100vw - 20px));
+  }
+
+  /* Group Bill Page */
+  .group-bill-page-container {
+    padding: 12px 8px 30px;
+  }
+
+  .group-bill-card {
+    padding: 16px 12px;
+    border-radius: 14px;
+  }
+
+  .group-bill-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+  }
+
+  .bill-card-title {
+    font-size: 1.4rem;
+  }
+
+  .bill-card-header-actions {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+
+  .bill-card-header-actions .btn {
+    flex: 1;
+    justify-content: center;
+    text-align: center;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  .bill-grand-total-card {
+    padding: 18px 12px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+  }
+
+  .bill-grand-amount {
+    font-size: 2.3rem;
+  }
+
+  .bill-split-summary-bar {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .split-stat--grand {
+    grid-column: span 2;
+  }
+
+  .split-stat-box {
+    padding: 10px 8px;
+    border-radius: 10px;
+  }
+
+  .split-box-label {
+    font-size: 0.68rem;
+  }
+
+  .split-box-amount {
+    font-size: 1.15rem;
+  }
+
+  .personal-order-card {
+    padding: 12px 10px;
+  }
+
+  .personal-order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .personal-dish-row {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .personal-dish-name {
+    font-size: 0.84rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .dish-unit-price {
+    margin-left: 0;
+  }
+
+  .team-basket-chip-grid {
+    gap: 6px;
+  }
+
+  .basket-item-pill {
+    padding: 4px 8px;
+    font-size: 0.76rem;
+  }
+
+  .bill-bottom-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .btn-copy-full-bill {
+    width: 100%;
+  }
+
   .bill-bottom-actions > div {
     display: flex;
     flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .bill-bottom-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Add Shop Page */
+  .add-shop-card-hero {
+    padding: 20px 16px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .add-shop-form-body {
+    padding: 20px 16px;
+  }
+
+  .starter-inputs-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .emoji-selection-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .add-shop-actions {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .add-shop-actions button {
+    width: 100%;
   }
 }
+
+/* Small Smart Phone Screens <= 440px */
+@media (max-width: 440px) {
+  .navbar-crumb {
+    display: none;
+  }
+
+  .btn-user-profile .user-nav-names {
+    display: none;
+  }
+
+  .btn-user-profile {
+    padding: 4px 6px;
+  }
+
+  .btn-nav-group span:not(.nav-member-badge):not(.pulse-dot) {
+    display: none;
+  }
+
+  .bill-split-summary-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .split-stat--grand {
+    grid-column: span 1;
+  }
+
+  .landing-hero-heading {
+    font-size: 1.85rem;
+  }
+
+  .demo-chips-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 
