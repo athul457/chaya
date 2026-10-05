@@ -90,7 +90,7 @@ const AuthModal: React.FC<Props> = ({ isOpen, onClose, onSuccess }) => {
   };
 
   const handleQuickDemoUser = async (demoName: string) => {
-    const demoEmail = `${demoName.toLowerCase().replace(/\s+/g, "")}@foodcourt.demo`;
+    const demoEmail = `${demoName.toLowerCase().replace(/\s+/g, "")}@splitwale.demo`;
     setLoading(true);
     const res = await signInUser(demoEmail, "password123");
     setLoading(false);
@@ -109,7 +109,7 @@ const AuthModal: React.FC<Props> = ({ isOpen, onClose, onSuccess }) => {
             <span className="auth-header-icon">🔐</span>
             <div>
               <h2 className="modal-title">
-                {mode === "login" ? "Sign In to FoodCourt" : "Create an Account"}
+                {mode === "login" ? "Sign In to Splitwale" : "Create a Splitwale Account"}
               </h2>
               <p className="modal-subtitle">
                 {mode === "login"

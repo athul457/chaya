@@ -83,7 +83,7 @@ const LandingAuthPage: React.FC<Props> = ({ onLoginSuccess, initialView = "regis
   };
 
   const handleQuickDemo = async (demoName: string) => {
-    const demoEmail = `${demoName.toLowerCase().replace(/[^a-z0-9]/g, "")}@foodcourt.demo`;
+    const demoEmail = `${demoName.toLowerCase().replace(/[^a-z0-9]/g, "")}@splitwale.demo`;
     setLoading(true);
     const res = await signInUser(demoEmail, "password123");
     setLoading(false);
@@ -102,7 +102,7 @@ const LandingAuthPage: React.FC<Props> = ({ onLoginSuccess, initialView = "regis
       <header className="landing-top-bar">
         <div className="landing-brand">
           <span className="landing-brand-logo">🍽️</span>
-          <span className="landing-brand-name">FoodCourt</span>
+          <span className="landing-brand-name">Splitwale</span>
         </div>
         <div className="landing-nav-switch">
           {view === "register" ? (
@@ -121,7 +121,7 @@ const LandingAuthPage: React.FC<Props> = ({ onLoginSuccess, initialView = "regis
             </span>
           ) : (
             <span className="switch-text">
-              New to FoodCourt?{" "}
+              New to Splitwale?{" "}
               <button
                 type="button"
                 className="link-switch-btn"

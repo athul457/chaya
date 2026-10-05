@@ -1,32 +1,38 @@
-# React + TypeScript + Vite
+# Splitwale 🍽️
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+**Splitwale** is a modern Single Page Application (SPA) designed for real-time collaborative food ordering and bill splitting across food courts and street stalls.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Collaborative Real-time Group Orders**: Multiple friends can join the same table group using a unique Group ID or User ID and select their dishes simultaneously.
+- **Dedicated Itemized Bill Breakdown (`/group-bill`)**:
+  - 👤 **Personal Share**: View your exact eaten items, counts, unit prices, and personal subtotal.
+  - 👥 **Team Breakdown**: View each friend's individual order and subtotal.
+  - 🍱 **Whole Team Food Basket**: Aggregated list of all dishes combined for easy counter ordering.
+  - 💰 **Grand Total Bill**: Clear split stats comparing your share vs. team share vs. grand total.
+- **Multi-Shop / Food Court Management**: Browse food stalls (e.g. Doshakkada, Tapas, Black Coffee) or add custom shops with interactive menu editors.
+- **Real-time Sync**: Multi-device cloud sync powered by Supabase Realtime with local multi-tab broadcast fallback.
 
-## React Compiler
+## 🚀 Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-## Expanding the Oxlint configuration
+2. **Configure environment variables**:
+   Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+   Add your Supabase credentials if using cloud sync.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+3. **Start development server**:
+   ```bash
+   npm run dev
+   ```
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+4. **Build for production**:
+   ```bash
+   npm run build
+   ```

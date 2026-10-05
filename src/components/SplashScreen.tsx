@@ -59,8 +59,8 @@ const SplashScreen: React.FC<Props> = ({ onDone }) => {
         </div>
 
         {/* Brand */}
-        <h1 className="splash-title">FoodCourt</h1>
-        <p className="splash-tagline">Discover · Order · Enjoy</p>
+        <h1 className="splash-title">Splitwale</h1>
+        <p className="splash-tagline">Discover · Order · Split</p>
 
         {/* Progress bar */}
         <div className="splash-progress-track">

@@ -23,9 +23,9 @@ export const Navbar: React.FC = () => {
   return (
     <header className="navbar">
       <div className="navbar-left">
-        <Link to="/dashboard" className="navbar-brand" aria-label="Go to food courts">
+        <Link to="/dashboard" className="navbar-brand" aria-label="Go to Splitwale Home">
           <span className="navbar-logo">🍽️</span>
-          <span className="navbar-title">FoodCourt</span>
+          <span className="navbar-title">Splitwale</span>
         </Link>
 
         {currentCourt && (

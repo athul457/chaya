@@ -20,7 +20,7 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="home-page">
       <div className="home-hero">
-        <h1 className="hero-title">Welcome to FoodCourt</h1>
+        <h1 className="hero-title">Welcome to Splitwale</h1>
         <p className="hero-sub">
           Choose a food court to explore their menu or start a Group Order with friends
         </p>
