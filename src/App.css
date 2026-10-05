@@ -903,6 +903,89 @@ input {
   color: var(--text-primary);
 }
 
+.btn-danger {
+  background: var(--red, #ef4444);
+  color: white;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);
+}
+.btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45);
+}
+.btn-danger:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Delete Confirmation Modal Styles */
+.delete-confirm-modal-box {
+  max-width: 480px;
+  border-top: 4px solid var(--red, #ef4444);
+}
+
+.delete-confirm-header {
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.delete-modal-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.delete-modal-title {
+  color: #991b1b;
+  font-size: 1.2rem;
+}
+
+.delete-confirm-form {
+  padding-top: 16px;
+}
+
+.delete-warning-box {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.delete-warning-text {
+  font-size: 0.88rem;
+  color: #991b1b;
+  margin: 0 0 8px 0;
+}
+
+.delete-instruction {
+  font-size: 0.84rem;
+  color: #7f1d1d;
+  margin: 0;
+}
+
+.delete-code-highlight {
+  display: inline-block;
+  background: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #b91c1c;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-family: inherit;
+  user-select: all;
+}
+
+.delete-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
 /* ============================================================
    MODAL
    ============================================================ */
