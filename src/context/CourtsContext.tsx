@@ -20,7 +20,19 @@ interface CourtsContextType {
   getCourtById: (id: string) => FoodCourt | undefined;
 }
 
-const CourtsContext = createContext<CourtsContextType | undefined>(undefined);
+const defaultCourtsContext: CourtsContextType = {
+  courts: getCachedCourts(),
+  isLoadingCourts: false,
+  isAddShopModalOpen: false,
+  setIsAddShopModalOpen: () => {},
+  handleAddShop: () => {},
+  handleDeleteShop: () => {},
+  handleUpdateCourt: () => {},
+  refreshCourts: async () => {},
+  getCourtById: (id: string) => getCachedCourts().find((c) => c.id === id),
+};
+
+const CourtsContext = createContext<CourtsContextType>(defaultCourtsContext);
 
 export const CourtsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [courts, setCourts] = useState<FoodCourt[]>(getCachedCourts);
@@ -101,8 +113,5 @@ export const CourtsProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
 export function useCourts() {
   const context = useContext(CourtsContext);
-  if (!context) {
-    throw new Error("useCourts must be used within a CourtsProvider");
-  }
-  return context;
+  return context || defaultCourtsContext;
 }

@@ -46,7 +46,10 @@ export async function fetchShopsWithItems(): Promise<FoodCourt[]> {
       .order("created_at", { ascending: true });
 
     if (shopsError) {
-      // Table might not exist yet in Supabase
+      console.warn(
+        "ℹ️ [Splitwale] Supabase 'shops' table not found in database. Run the SQL script from `supabase_schema.sql` in your Supabase project's SQL Editor to create the tables. Falling back to local storage.",
+        shopsError
+      );
       return getCachedCourts();
     }
 
@@ -63,6 +66,10 @@ export async function fetchShopsWithItems(): Promise<FoodCourt[]> {
       .order("created_at", { ascending: true });
 
     if (itemsError) {
+      console.warn(
+        "ℹ️ [Splitwale] Supabase 'menu_items' table error. Run `supabase_schema.sql` in Supabase SQL Editor:",
+        itemsError
+      );
       return getCachedCourts();
     }
 

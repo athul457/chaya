@@ -36,7 +36,27 @@ interface GroupOrderContextType {
   clearNotification: () => void;
 }
 
-const GroupOrderContext = createContext<GroupOrderContextType | undefined>(undefined);
+const defaultGroupOrderContext: GroupOrderContextType = {
+  groupSession: null,
+  currentMemberId: null,
+  initialTableCode: "",
+  setInitialTableCode: () => {},
+  isGroupModalOpen: false,
+  setIsGroupModalOpen: () => {},
+  isGroupBillOpen: false,
+  setIsGroupBillOpen: () => {},
+  handleJoinOrCreateSession: () => {},
+  handleLeaveSession: () => {},
+  handleDisbandGroup: () => {},
+  handleRemoveMember: () => {},
+  handleAddMemberByUserId: async () => ({ success: false, message: "" }),
+  handleJoinSessionByGroupId: async () => ({ success: false, message: "" }),
+  handleUpdateMemberItems: () => {},
+  groupNotification: null,
+  clearNotification: () => {},
+};
+
+const GroupOrderContext = createContext<GroupOrderContextType>(defaultGroupOrderContext);
 
 export const GroupOrderProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const savedState = loadSavedGroupSession();
@@ -349,8 +369,5 @@ export const GroupOrderProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
 export function useGroupOrder() {
   const context = useContext(GroupOrderContext);
-  if (!context) {
-    throw new Error("useGroupOrder must be used within a GroupOrderProvider");
-  }
-  return context;
+  return context || defaultGroupOrderContext;
 }

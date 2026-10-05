@@ -66,7 +66,69 @@ CREATE POLICY "Allow public delete to menu_items"
   USING (true);
 
 
--- 3. (Optional) Initial Seed Data for Default Shops & Dishes
+-- 3. Create the 'profiles' table
+CREATE TABLE IF NOT EXISTS public.profiles (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  user_tag TEXT,
+  avatar_color TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Enable Row Level Security (RLS)
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read and write access for profiles
+CREATE POLICY "Allow public read access to profiles"
+  ON public.profiles FOR SELECT
+  USING (true);
+
+CREATE POLICY "Allow public insert to profiles"
+  ON public.profiles FOR INSERT
+  WITH CHECK (true);
+
+CREATE POLICY "Allow public update to profiles"
+  ON public.profiles FOR UPDATE
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Allow public delete to profiles"
+  ON public.profiles FOR DELETE
+  USING (true);
+
+
+-- 4. Create the 'group_orders' table
+CREATE TABLE IF NOT EXISTS public.group_orders (
+  table_code TEXT PRIMARY KEY,
+  court_id TEXT,
+  session_data JSONB NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT now()
+);
+
+-- Enable Row Level Security (RLS)
+ALTER TABLE public.group_orders ENABLE ROW LEVEL SECURITY;
+
+-- Allow public read and write access for group_orders
+CREATE POLICY "Allow public read access to group_orders"
+  ON public.group_orders FOR SELECT
+  USING (true);
+
+CREATE POLICY "Allow public insert to group_orders"
+  ON public.group_orders FOR INSERT
+  WITH CHECK (true);
+
+CREATE POLICY "Allow public update to group_orders"
+  ON public.group_orders FOR UPDATE
+  USING (true)
+  WITH CHECK (true);
+
+CREATE POLICY "Allow public delete to group_orders"
+  ON public.group_orders FOR DELETE
+  USING (true);
+
+
+-- 5. (Optional) Initial Seed Data for Default Shops & Dishes
 INSERT INTO public.shops (id, name, description, emoji, tagline) VALUES
   ('doshakkada', 'Doshakkada', 'Authentic South Indian crispy dosas, fluffy idlis, and traditional chutneys.', '🥞', 'Taste of Tradition'),
   ('tappas', 'Tappas', 'Fresh street snacks, rolls, spicy bites, and quick afternoon munchies.', '🌯', 'Quick & Flavorful'),
