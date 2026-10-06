@@ -389,6 +389,13 @@ export const GroupOrderPage: React.FC = () => {
               </p>
             </div>
             <div className="active-header-actions">
+              <Link
+                to="/group-bill"
+                className="btn btn-primary btn-header-view-bill"
+                title="View separate Live Order & Bill Summary page"
+              >
+                🧾 Live Order & Bill Page ➔
+              </Link>
               <button
                 type="button"
                 className="btn btn-secondary btn-copy-group-id"
@@ -399,9 +406,9 @@ export const GroupOrderPage: React.FC = () => {
               </button>
               <Link
                 to={`/court/${groupSession.courtId}`}
-                className="btn btn-primary btn-browse-menu"
+                className="btn btn-secondary btn-browse-menu"
               >
-                🍽️ Browse Menu & Order Dishes
+                🍽️ Browse Menu
               </Link>
               {isCurrentMemberHost ? (
                 <button
@@ -577,24 +584,19 @@ export const GroupOrderPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Detailed Personal vs Team Order Breakdown */}
+            {/* Right Column: Live Order & Bill Summary Navigation Card */}
             <div className="group-right-col">
-              <div className="group-bill-summary-card group-page-card">
+              <div className="group-bill-overview-card group-page-card">
                 <div className="bill-summary-header">
                   <div>
-                    <h3 className="bill-summary-title">🧾 Live Order & Bill Summary</h3>
+                    <h3 className="bill-summary-title">🧾 Live Order & Bill</h3>
                     <p className="bill-summary-sub">
-                      Personal breakdown, team items, and combined grand total
+                      Track individual shares, team orders, and grand total
                     </p>
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-                    <Link to="/group-bill" className="btn btn-secondary btn-sm" title="Open separate bill page">
-                      🧾 Separate Bill Page ➔
-                    </Link>
-                    <span className="bill-item-count-badge">
-                      {totalItemCount} {totalItemCount === 1 ? "item" : "items"} total
-                    </span>
-                  </div>
+                  <span className="bill-item-count-badge">
+                    {totalItemCount} {totalItemCount === 1 ? "item" : "items"} total
+                  </span>
                 </div>
 
                 {/* 1. Grand Total Split Summary Bar */}
@@ -616,136 +618,49 @@ export const GroupOrderPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* 2. User's Own Eaten Items (Highlighted) */}
-                <div className="personal-order-card">
-                  <div className="personal-order-header">
+                {/* Personal status preview */}
+                <div className="bill-overview-personal-pill">
+                  <div className="personal-order-header" style={{ marginBottom: 0, paddingBottom: 0, borderBottom: "none" }}>
                     <div className="personal-order-title-row">
-                      <span className="personal-order-badge">👤 YOUR EATEN ITEMS</span>
+                      <span className="personal-order-badge">👤 YOUR SELECTION</span>
                       <span className="personal-order-name">({currentUser?.name || "You"})</span>
                     </div>
-                    <span className="personal-order-subtotal">My Total: <strong>₹{mySubtotal.toFixed(2)}</strong></span>
+                    <span className="personal-order-subtotal">
+                      My Total: <strong>₹{mySubtotal.toFixed(2)}</strong> ({myItemCount} {myItemCount === 1 ? "dish" : "dishes"})
+                    </span>
                   </div>
-
-                  {myItems.length === 0 ? (
-                    <div className="personal-empty-box">
-                      <p>You haven't selected any dishes yet.</p>
-                      <Link
-                        to={`/court/${groupSession.courtId}`}
-                        className="btn btn-primary btn-sm"
-                      >
-                        + Select Dishes from Menu
-                      </Link>
-                    </div>
-                  ) : (
-                    <ul className="personal-items-list">
-                      {myItems.map((item) => (
-                        <li key={item.itemId} className="personal-dish-row">
-                          <span className="personal-dish-name">
-                            <strong className="dish-qty">{item.count}×</strong> {item.name}
-                            <span className="dish-unit-price">(@ ₹{item.price})</span>
-                          </span>
-                          <span className="personal-dish-price">
-                            ₹{(item.price * item.count).toFixed(2)}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </div>
 
-                {/* 3. Whole Team Breakdown */}
-                {otherMembers.length > 0 && (
-                  <div className="team-orders-section">
-                    <h4 className="team-section-heading">
-                      👥 Rest of the Team's Orders ({otherMembers.length})
-                    </h4>
-                    <div className="team-members-breakdown-list">
-                      {otherMembers.map((m) => {
-                        const memberTotal = m.items.reduce(
-                          (sum, i) => sum + i.price * i.count,
-                          0
-                        );
-                        return (
-                          <div key={m.id} className="team-member-bill-card">
-                            <div className="team-member-bill-header">
-                              <div className="team-member-ident">
-                                <span
-                                  className="chip-avatar-dot"
-                                  style={{ backgroundColor: m.avatarColor }}
-                                />
-                                <strong>{m.name}</strong>
-                                {m.isHost && <span className="host-tag">Host</span>}
-                                {m.userTag && <span className="member-tag-badge">{m.userTag}</span>}
-                              </div>
-                              <span className="team-member-subtotal">₹{memberTotal.toFixed(2)}</span>
-                            </div>
+                {/* Primary Action Button to Separate Page */}
+                <div className="bill-overview-cta-box">
+                  <Link
+                    to="/group-bill"
+                    className="btn btn-primary btn-go-to-bill"
+                    title="Open separate full Live Order & Bill Summary page"
+                  >
+                    🧾 Open Separate Bill Page ➔
+                  </Link>
+                  <p className="bill-overview-cta-hint">
+                    👉 Full dish breakdown, eaten items, and team basket are on the separate bill page.
+                  </p>
+                </div>
 
-                            {m.items.length === 0 ? (
-                              <p className="team-member-empty">Hasn't added any items yet</p>
-                            ) : (
-                              <ul className="team-member-items-list">
-                                {m.items.map((it) => (
-                                  <li key={it.itemId} className="team-dish-row">
-                                    <span className="team-dish-title">
-                                      {it.count}× {it.name}
-                                    </span>
-                                    <span className="team-dish-cost">
-                                      ₹{(it.price * it.count).toFixed(2)}
-                                    </span>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-
-                {/* 4. Combined Whole Team Food Items (All Dishes Combined) */}
-                {teamAggregatedItems.length > 0 && (
-                  <div className="team-food-basket-box">
-                    <h4 className="team-section-heading">
-                      🍱 Whole Team Food Items (Combined Tally)
-                    </h4>
-                    <div className="team-basket-chip-grid">
-                      {teamAggregatedItems.map((item) => (
-                        <div key={item.name} className="basket-item-pill">
-                          <span className="basket-qty">{item.count}×</span>
-                          <span className="basket-title">{item.name}</span>
-                          <span className="basket-subtotal">₹{(item.price * item.count).toFixed(2)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Actions & Copy Bill */}
-                <div className="bill-bottom-actions">
+                {/* Secondary Fast Actions */}
+                <div className="bill-overview-bottom-actions">
+                  <Link
+                    to={`/court/${groupSession.courtId}`}
+                    className="btn btn-secondary"
+                  >
+                    🍽️ Add More Dishes
+                  </Link>
                   <button
                     type="button"
-                    className="btn btn-secondary btn-copy-full-bill"
+                    className="btn btn-secondary"
                     onClick={copyBillText}
-                    title="Copy full itemized bill to share"
+                    title="Copy full itemized bill summary"
                   >
-                    {copiedBill ? "✓ Full Bill Copied!" : "📋 Copy Full Bill Summary"}
+                    {copiedBill ? "✓ Copied!" : "📋 Copy Summary"}
                   </button>
-                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                    <Link
-                      to="/group-bill"
-                      className="btn btn-secondary"
-                      title="Open full dedicated bill breakdown page"
-                    >
-                      🧾 Full Bill Page ➔
-                    </Link>
-                    <Link
-                      to={`/court/${groupSession.courtId}`}
-                      className="btn btn-primary"
-                    >
-                      🍽️ Add More Dishes
-                    </Link>
-                  </div>
                 </div>
               </div>
             </div>

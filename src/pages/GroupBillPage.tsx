@@ -121,15 +121,15 @@ export const GroupBillPage: React.FC = () => {
     <div className="group-bill-page-container">
       {/* Top Navigation */}
       <div className="group-page-nav-bar">
-        <Link to={backUrl} className="btn btn-secondary btn-back-dashboard">
-          ← Back to Shop Menu
+        <Link to="/group-order" className="btn btn-secondary btn-back-dashboard">
+          ← Back to Friends Group
         </Link>
         <div className="group-page-breadcrumb">
           <Link to="/dashboard">Home</Link>
           <span>›</span>
           <Link to="/group-order">Friends Group</Link>
           <span>›</span>
-          <span className="current">Group Bill Breakdown</span>
+          <span className="current">Live Order & Bill Summary</span>
         </div>
       </div>
 
@@ -138,19 +138,22 @@ export const GroupBillPage: React.FC = () => {
         {/* Header */}
         <div className="group-bill-card-header">
           <div className="bill-card-title-box">
-            <span className="group-active-badge">Group Order Bill Breakdown</span>
-            <h1 className="bill-card-title">{groupSession.name}</h1>
+            <span className="group-active-badge">Live Order & Bill Summary</span>
+            <h1 className="bill-card-title">🧾 Live Order & Bill Summary</h1>
             <p className="bill-card-subtitle">
-              {groupSession.courtEmoji} {groupSession.courtName} • Group ID:{" "}
-              <strong>{groupSession.id || groupSession.tableCode}</strong>
+              Personal breakdown, team items, and combined grand total for{" "}
+              <strong>{groupSession.name}</strong> • {groupSession.courtEmoji} {groupSession.courtName} (Group ID: <strong>{groupSession.id || groupSession.tableCode}</strong>)
             </p>
           </div>
           <div className="bill-card-header-actions">
+            <span className="bill-item-count-badge" style={{ padding: "6px 14px", fontSize: "0.85rem" }}>
+              {totalItemCount} {totalItemCount === 1 ? "item" : "items"} total
+            </span>
             <Link to="/group-order" className="btn btn-secondary btn-sm">
-              👥 View Group Roster
+              👥 Back to Group Page
             </Link>
             <Link to={backUrl} className="btn btn-primary btn-sm">
-              🍽️ Back to Menu
+              🍽️ + Add More Dishes
             </Link>
           </div>
         </div>
@@ -189,7 +192,7 @@ export const GroupBillPage: React.FC = () => {
                 <span className="personal-order-name">({myMember.name})</span>
               </div>
               <span className="personal-order-subtotal">
-                Your Subtotal: <strong>₹{mySubtotal.toFixed(2)}</strong>
+                My Total: <strong>₹{mySubtotal.toFixed(2)}</strong>
               </span>
             </div>
 
