@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Navbar from "../common/Navbar";
 import GroupOrderBanner from "../GroupOrderBanner";
 import AuthModal from "../AuthModal";
@@ -16,6 +16,12 @@ export const MainLayout: React.FC = () => {
     clearNotification,
   } = useGroupOrder();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Hide the floating group banner on the group & bill pages themselves to prevent duplicate headers
+  const isGroupOrBillPage =
+    location.pathname.startsWith("/group") ||
+    location.pathname.startsWith("/bill");
 
   return (
     <div className="app">
@@ -35,8 +41,8 @@ export const MainLayout: React.FC = () => {
         </div>
       )}
 
-      {/* Real-time Group Order Banner when active */}
-      {groupSession && (
+      {/* Real-time Group Order Banner when active on other pages */}
+      {groupSession && !isGroupOrBillPage && (
         <GroupOrderBanner
           session={groupSession}
           currentMemberId={currentMemberId}

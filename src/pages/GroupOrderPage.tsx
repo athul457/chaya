@@ -244,15 +244,17 @@ export const GroupOrderPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Hero Header */}
-      <div className="group-page-header">
-        <div className="group-page-title-box">
-          <span className="group-page-icon">👥</span>
-          <div>
-            <h1 className="group-page-title">Friends Group Order</h1>
+      {/* Hero Header (Only shown when no active group session) */}
+      {!groupSession && (
+        <div className="group-page-header">
+          <div className="group-page-title-box">
+            <span className="group-page-icon">👥</span>
+            <div>
+              <h1 className="group-page-title">Friends Group Order</h1>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {groupSession ? (
         /* ================= Active Group Management View ================= */
@@ -268,9 +270,10 @@ export const GroupOrderPage: React.FC = () => {
               </div>
               <h2 className="active-group-name">{groupSession.name}</h2>
               <p className="active-court-meta">
-                Ordering from: <strong>{groupSession.courtEmoji} {groupSession.courtName}</strong> • Hosted by <strong>{groupSession.hostName}</strong>
+                Ordering from: <strong>{groupSession.courtEmoji || "🍽️"} {groupSession.courtName}</strong> • Hosted by <strong>{groupSession.hostName}</strong>
               </p>
             </div>
+
             <div className="active-header-actions">
               <Link
                 to="/group-bill"
@@ -279,38 +282,42 @@ export const GroupOrderPage: React.FC = () => {
               >
                 🧾 Live Order & Bill Page ➔
               </Link>
-              <button
-                type="button"
-                className="btn btn-secondary btn-copy-group-id"
-                onClick={copyActiveGroupId}
-                title="Copy Group ID to share with friends"
-              >
-                {copiedGroupId ? "✓ Group ID Copied!" : `📋 Copy Group ID (${activeGroupId})`}
-              </button>
+
               <Link
                 to={`/court/${groupSession.courtId}`}
                 className="btn btn-secondary btn-browse-menu"
               >
-                🍽️ Browse Menu
+                🍽️ Browse Menu & Order Dishes
               </Link>
-              {isCurrentMemberHost ? (
+
+              <div className="active-header-utility-actions">
                 <button
                   type="button"
-                  className="btn btn-secondary btn-disband-active"
-                  onClick={onDisbandGroupClick}
-                  title="Disband this group for all members"
+                  className="btn btn-secondary btn-copy-group-id"
+                  onClick={copyActiveGroupId}
+                  title="Copy Group ID to share with friends"
                 >
-                  💥 Disband Group
+                  {copiedGroupId ? "✓ Copied ID!" : "📋 Copy ID"}
                 </button>
-              ) : (
-                <button
-                  type="button"
-                  className="btn btn-secondary btn-exit-table"
-                  onClick={onExitGroupClick}
-                >
-                  🚪 Exit Group
-                </button>
-              )}
+                {isCurrentMemberHost ? (
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-disband-active"
+                    onClick={onDisbandGroupClick}
+                    title="Disband this group for all members"
+                  >
+                    💥 Disband Group
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="btn btn-secondary btn-exit-table"
+                    onClick={onExitGroupClick}
+                  >
+                    🚪 Exit Group
+                  </button>
+                )}
+              </div>
             </div>
           </div>
 

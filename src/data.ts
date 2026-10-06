@@ -5,7 +5,7 @@ export const initialFoodCourts: FoodCourt[] = [
     id: "doshakkada",
     name: "Doshakkada",
     description: "South Indian street food",
-    emoji: "🫓",
+    emoji: "🥞",
     tagline: "Crispy dosas & authentic chaat, straight from the griddle",
     items: [
       { id: "dk-1", name: "Tea", price: 12, checked: false, count: 1 },
