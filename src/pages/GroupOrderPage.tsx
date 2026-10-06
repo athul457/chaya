@@ -36,7 +36,6 @@ export const GroupOrderPage: React.FC = () => {
   );
   const [selectedCourtId, setSelectedCourtId] = useState(courts[0]?.id || "");
   const [initialFriendId, setInitialFriendId] = useState("");
-  const [copiedMyId, setCopiedMyId] = useState(false);
   const [copiedGroupId, setCopiedGroupId] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -56,15 +55,11 @@ export const GroupOrderPage: React.FC = () => {
     text: string;
   } | null>(null);
 
+
+
   const myUserTag =
     currentUser?.userTag ||
     (currentUser?.id ? `USR-${currentUser.id.slice(-4).toUpperCase()}` : "USR-ME");
-
-  const copyMyUserId = () => {
-    navigator.clipboard.writeText(myUserTag);
-    setCopiedMyId(true);
-    setTimeout(() => setCopiedMyId(false), 2000);
-  };
 
   const copyActiveGroupId = () => {
     const idToCopy = groupSession?.id || groupSession?.tableCode;
@@ -345,29 +340,7 @@ export const GroupOrderPage: React.FC = () => {
           <span className="group-page-icon">👥</span>
           <div>
             <h1 className="group-page-title">Friends Group Order</h1>
-            <p className="group-page-subtitle">
-              Connect with friends using Unique User IDs or shareable Group IDs, order food together, and view a live bill
-            </p>
           </div>
-        </div>
-
-        {/* User's Unique Shareable ID Card */}
-        <div className="user-id-top-banner group-id-hero-card">
-          <div className="user-id-banner-content">
-            <span className="user-id-banner-icon">🔑</span>
-            <div className="user-id-banner-text">
-              <span className="user-id-banner-title">Your Unique Shareable ID</span>
-              <span className="user-id-banner-code">{myUserTag}</span>
-            </div>
-          </div>
-          <button
-            type="button"
-            className="btn btn-secondary btn-copy-my-id"
-            onClick={copyMyUserId}
-            title="Copy your ID to share with friends"
-          >
-            {copiedMyId ? "✓ Copied!" : "📋 Copy My ID"}
-          </button>
         </div>
       </div>
 
