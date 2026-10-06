@@ -226,99 +226,9 @@ export const GroupOrderPage: React.FC = () => {
         groupSession.hostId === currentMemberId
       : false;
 
-  // Calculate bill totals if in active session
+  // Members list and active group ID
   const membersList = groupSession ? Object.values(groupSession.members) : [];
-
-  // 1. Current user's eaten items and individual total
-  const myMember = currentMemberId && groupSession ? groupSession.members[currentMemberId] : null;
-  const myItems = myMember?.items || [];
-  const mySubtotal = myItems.reduce((sum, i) => sum + i.price * i.count, 0);
-  const myItemCount = myItems.reduce((sum, i) => sum + i.count, 0);
-
-  // 2. Rest of the team members
-  const otherMembers = membersList.filter((m) => m.id !== currentMemberId);
-
-  // 3. Combined team food items tally (aggregated by name)
-  const teamItemsMap = new Map<string, { name: string; price: number; count: number }>();
-  membersList.forEach((m) => {
-    m.items.forEach((item) => {
-      const existing = teamItemsMap.get(item.name);
-      if (existing) {
-        existing.count += item.count;
-      } else {
-        teamItemsMap.set(item.name, {
-          name: item.name,
-          price: item.price,
-          count: item.count,
-        });
-      }
-    });
-  });
-  const teamAggregatedItems = Array.from(teamItemsMap.values());
-
-  // 4. Combined group grand totals
-  const grandTotal = membersList.reduce(
-    (sum, m) => sum + m.items.reduce((s, i) => s + i.price * i.count, 0),
-    0
-  );
-  const totalItemCount = membersList.reduce(
-    (sum, m) => sum + m.items.reduce((s, i) => s + i.count, 0),
-    0
-  );
-  const othersTotal = grandTotal - mySubtotal;
-
-  const [copiedBill, setCopiedBill] = useState(false);
-
   const activeGroupId = groupSession?.id || groupSession?.tableCode || "GRP-0000";
-
-  const copyBillText = () => {
-    if (!groupSession) return;
-    let text = `🍽️ Friends Group: ${groupSession.name} (ID: ${activeGroupId})\n`;
-    text += `Food Court: ${groupSession.courtName}\n`;
-    text += `──────────────────────────────────────\n`;
-
-    if (myMember) {
-      text += `👤 YOUR PERSONAL SHARE (${myMember.name}):\n`;
-      if (myItems.length === 0) {
-        text += `   (No items selected yet)\n`;
-      } else {
-        myItems.forEach((item) => {
-          text += `   • ${item.count}x ${item.name} (@ ₹${item.price}) = ₹${(item.price * item.count).toFixed(2)}\n`;
-        });
-      }
-      text += `   Your Subtotal: ₹${mySubtotal.toFixed(2)}\n\n`;
-    }
-
-    if (otherMembers.length > 0) {
-      text += `👥 REST OF THE TEAM:\n`;
-      otherMembers.forEach((m) => {
-        const sub = m.items.reduce((s, i) => s + i.price * i.count, 0);
-        text += `   👤 ${m.name} (${m.userTag || m.id}):\n`;
-        if (m.items.length === 0) {
-          text += `      (No items yet)\n`;
-        } else {
-          m.items.forEach((item) => {
-            text += `      • ${item.count}x ${item.name} = ₹${(item.price * item.count).toFixed(2)}\n`;
-          });
-        }
-        text += `      Subtotal: ₹${sub.toFixed(2)}\n`;
-      });
-      text += `\n`;
-    }
-
-    text += `🍱 WHOLE TEAM FOOD BASKET:\n`;
-    teamAggregatedItems.forEach((i) => {
-      text += `   • ${i.count}x ${i.name} = ₹${(i.price * i.count).toFixed(2)}\n`;
-    });
-
-    text += `──────────────────────────────────────\n`;
-    text += `💰 GRAND TOTAL: ₹${grandTotal.toFixed(2)} (${totalItemCount} items)\n`;
-    text += `   Your Share: ₹${mySubtotal.toFixed(2)} | Team Share: ₹${othersTotal.toFixed(2)}\n`;
-
-    navigator.clipboard.writeText(text);
-    setCopiedBill(true);
-    setTimeout(() => setCopiedBill(false), 2200);
-  };
 
   return (
     <div className="group-page-container">
@@ -427,214 +337,131 @@ export const GroupOrderPage: React.FC = () => {
             </button>
           </div>
 
-          <div className="group-active-grid">
-            {/* Left Column: Add Friends & Member Roster */}
-            <div className="group-left-col">
-              {/* Add Member by User ID Form */}
-              <div className="add-by-user-id-card group-page-card">
-                <h3 className="add-user-id-title">➕ Add Friend by User ID</h3>
-                <p className="add-user-id-sub">
-                  Enter your friend's Unique User ID (e.g. <code>USR-XXXX</code>) or email to add them instantly:
-                </p>
+          {/* Active Group Details & Members Section */}
+          <div className="group-active-members-container">
+            {/* Add Member by User ID Form */}
+            <div className="add-by-user-id-card group-page-card">
+              <h3 className="add-user-id-title">➕ Add Friend by User ID</h3>
+              <p className="add-user-id-sub">
+                Enter your friend's Unique User ID (e.g. <code>USR-XXXX</code>) or email to add them instantly:
+              </p>
 
-                <form onSubmit={handleAddFriendSubmit} className="add-by-id-form">
-                  <input
-                    type="text"
-                    className="clean-input add-by-id-input"
-                    placeholder="e.g. USR-4821 or friend@example.com"
-                    value={friendIdInput}
-                    onChange={(e) => setFriendIdInput(e.target.value)}
-                    disabled={addLoading}
-                  />
-                  <button
-                    type="submit"
-                    className="btn btn-primary btn-add-by-id"
-                    disabled={!friendIdInput.trim() || addLoading}
-                  >
-                    {addLoading ? "Adding..." : "+ Add Friend"}
-                  </button>
-                </form>
+              <form onSubmit={handleAddFriendSubmit} className="add-by-id-form">
+                <input
+                  type="text"
+                  className="clean-input add-by-id-input"
+                  placeholder="e.g. USR-4821 or friend@example.com"
+                  value={friendIdInput}
+                  onChange={(e) => setFriendIdInput(e.target.value)}
+                  disabled={addLoading}
+                />
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-add-by-id"
+                  disabled={!friendIdInput.trim() || addLoading}
+                >
+                  {addLoading ? "Adding..." : "+ Add Friend"}
+                </button>
+              </form>
 
-                {addFeedback && (
-                  <div className={`add-id-alert add-id-alert--${addFeedback.type}`}>
-                    <span>{addFeedback.type === "success" ? "✓" : "⚠️"}</span>
-                    <span>{addFeedback.text}</span>
-                  </div>
-                )}
-
-                {/* Quick Add Suggestions if other known registered users exist */}
-                {otherUsers.length > 0 && (
-                  <div className="quick-add-suggestions">
-                    <span className="quick-add-label">Quick Add Known Friends:</span>
-                    <div className="quick-add-chips">
-                      {otherUsers.slice(0, 5).map((u) => (
-                        <button
-                          key={u.id}
-                          type="button"
-                          className="quick-user-chip"
-                          onClick={() => setFriendIdInput(u.userTag || u.id)}
-                          title={`Click to add ${u.name}`}
-                        >
-                          <span
-                            className="chip-avatar-dot"
-                            style={{ backgroundColor: u.avatarColor }}
-                          />
-                          <span>{u.name}</span>
-                          <span className="chip-tag">({u.userTag})</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Members in Group List with Remove Option */}
-              <div className="group-members-list group-page-card">
-                <div className="members-list-header">
-                  <h3 className="group-members-label">
-                    Group Members ({membersList.length})
-                  </h3>
-                  <span className="members-hint-note">Live multi-device connected</span>
+              {addFeedback && (
+                <div className={`add-id-alert add-id-alert--${addFeedback.type}`}>
+                  <span>{addFeedback.type === "success" ? "✓" : "⚠️"}</span>
+                  <span>{addFeedback.text}</span>
                 </div>
+              )}
 
-                <div className="group-avatar-stack">
-                  {membersList.map((m) => {
-                    const isMe = m.id === currentMemberId;
-                    const canRemove = isCurrentMemberHost && !isMe;
-                    const memberItemsCount = m.items.reduce((acc, i) => acc + i.count, 0);
-
-                    return (
-                      <div
-                        key={m.id}
-                        className={`group-member-pill ${isMe ? "group-member-pill--me" : ""}`}
+              {/* Quick Add Suggestions if other known registered users exist */}
+              {otherUsers.length > 0 && (
+                <div className="quick-add-suggestions">
+                  <span className="quick-add-label">Quick Add Known Friends:</span>
+                  <div className="quick-add-chips">
+                    {otherUsers.slice(0, 5).map((u) => (
+                      <button
+                        key={u.id}
+                        type="button"
+                        className="quick-user-chip"
+                        onClick={() => setFriendIdInput(u.userTag || u.id)}
+                        title={`Click to add ${u.name}`}
                       >
                         <span
-                          className="member-avatar-dot"
-                          style={{ backgroundColor: m.avatarColor }}
-                        >
-                          {m.name.charAt(0).toUpperCase()}
-                        </span>
-
-                        <div className="member-info-col">
-                          <div className="member-name-row">
-                            <span className="member-name-text">
-                              {m.name} {isMe && "(You)"} {m.isHost && "👑 Host"}
-                            </span>
-                            {m.userTag && (
-                              <span className="member-tag-badge">{m.userTag}</span>
-                            )}
-                          </div>
-                          <span className="member-item-count">
-                            {memberItemsCount} {memberItemsCount === 1 ? "item" : "items"} selected
-                          </span>
-                        </div>
-
-                        {/* Remove Member Option for Host */}
-                        {canRemove && (
-                          <button
-                            type="button"
-                            className="btn-remove-member"
-                            onClick={() => onRemoveMemberClick(m)}
-                            title={`Remove ${m.name} from group`}
-                          >
-                            <span>✕ Remove</span>
-                          </button>
-                        )}
-                      </div>
-                    );
-                  })}
+                          className="chip-avatar-dot"
+                          style={{ backgroundColor: u.avatarColor }}
+                        />
+                        <span>{u.name}</span>
+                        <span className="chip-tag">({u.userTag})</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-
-                {/* Cloud Sync Status */}
-                <div className="group-sync-pill">
-                  <span className="pulse-dot"></span>
-                  <span>
-                    {isSupabaseConfigured
-                      ? "Supabase Realtime Cloud Sync Active"
-                      : "Local Multi-Tab Realtime Sync Active"}
-                  </span>
-                </div>
-              </div>
+              )}
             </div>
 
-            {/* Right Column: Live Order & Bill Summary Navigation Card */}
-            <div className="group-right-col">
-              <div className="group-bill-overview-card group-page-card">
-                <div className="bill-summary-header">
-                  <div>
-                    <h3 className="bill-summary-title">🧾 Live Order & Bill</h3>
-                    <p className="bill-summary-sub">
-                      Track individual shares, team orders, and grand total
-                    </p>
-                  </div>
-                  <span className="bill-item-count-badge">
-                    {totalItemCount} {totalItemCount === 1 ? "item" : "items"} total
-                  </span>
-                </div>
+            {/* Members in Group List with Remove Option */}
+            <div className="group-members-list group-page-card">
+              <div className="members-list-header">
+                <h3 className="group-members-label">
+                  Group Members ({membersList.length})
+                </h3>
+                <span className="members-hint-note">Live multi-device connected</span>
+              </div>
 
-                {/* 1. Grand Total Split Summary Bar */}
-                <div className="bill-split-summary-bar">
-                  <div className="split-stat-box split-stat--you">
-                    <span className="split-box-label">👤 YOUR SHARE</span>
-                    <span className="split-box-amount">₹{mySubtotal.toFixed(2)}</span>
-                    <span className="split-box-count">{myItemCount} {myItemCount === 1 ? "item" : "items"}</span>
-                  </div>
-                  <div className="split-stat-box split-stat--team">
-                    <span className="split-box-label">👥 TEAM'S SHARE</span>
-                    <span className="split-box-amount">₹{othersTotal.toFixed(2)}</span>
-                    <span className="split-box-count">{totalItemCount - myItemCount} items</span>
-                  </div>
-                  <div className="split-stat-box split-stat--grand">
-                    <span className="split-box-label">💰 GRAND TOTAL</span>
-                    <span className="split-box-amount">₹{grandTotal.toFixed(2)}</span>
-                    <span className="split-box-count">{totalItemCount} items total</span>
-                  </div>
-                </div>
+              <div className="group-avatar-stack">
+                {membersList.map((m) => {
+                  const isMe = m.id === currentMemberId;
+                  const canRemove = isCurrentMemberHost && !isMe;
+                  const memberItemsCount = m.items.reduce((acc, i) => acc + i.count, 0);
 
-                {/* Personal status preview */}
-                <div className="bill-overview-personal-pill">
-                  <div className="personal-order-header" style={{ marginBottom: 0, paddingBottom: 0, borderBottom: "none" }}>
-                    <div className="personal-order-title-row">
-                      <span className="personal-order-badge">👤 YOUR SELECTION</span>
-                      <span className="personal-order-name">({currentUser?.name || "You"})</span>
+                  return (
+                    <div
+                      key={m.id}
+                      className={`group-member-pill ${isMe ? "group-member-pill--me" : ""}`}
+                    >
+                      <span
+                        className="member-avatar-dot"
+                        style={{ backgroundColor: m.avatarColor }}
+                      >
+                        {m.name.charAt(0).toUpperCase()}
+                      </span>
+
+                      <div className="member-info-col">
+                        <div className="member-name-row">
+                          <span className="member-name-text">
+                            {m.name} {isMe && "(You)"} {m.isHost && "👑 Host"}
+                          </span>
+                          {m.userTag && (
+                            <span className="member-tag-badge">{m.userTag}</span>
+                          )}
+                        </div>
+                        <span className="member-item-count">
+                          {memberItemsCount} {memberItemsCount === 1 ? "item" : "items"} selected
+                        </span>
+                      </div>
+
+                      {/* Remove Member Option for Host */}
+                      {canRemove && (
+                        <button
+                          type="button"
+                          className="btn-remove-member"
+                          onClick={() => onRemoveMemberClick(m)}
+                          title={`Remove ${m.name} from group`}
+                        >
+                          <span>✕ Remove</span>
+                        </button>
+                      )}
                     </div>
-                    <span className="personal-order-subtotal">
-                      My Total: <strong>₹{mySubtotal.toFixed(2)}</strong> ({myItemCount} {myItemCount === 1 ? "dish" : "dishes"})
-                    </span>
-                  </div>
-                </div>
+                  );
+                })}
+              </div>
 
-                {/* Primary Action Button to Separate Page */}
-                <div className="bill-overview-cta-box">
-                  <Link
-                    to="/group-bill"
-                    className="btn btn-primary btn-go-to-bill"
-                    title="Open separate full Live Order & Bill Summary page"
-                  >
-                    🧾 Open Separate Bill Page ➔
-                  </Link>
-                  <p className="bill-overview-cta-hint">
-                    👉 Full dish breakdown, eaten items, and team basket are on the separate bill page.
-                  </p>
-                </div>
-
-                {/* Secondary Fast Actions */}
-                <div className="bill-overview-bottom-actions">
-                  <Link
-                    to={`/court/${groupSession.courtId}`}
-                    className="btn btn-secondary"
-                  >
-                    🍽️ Add More Dishes
-                  </Link>
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={copyBillText}
-                    title="Copy full itemized bill summary"
-                  >
-                    {copiedBill ? "✓ Copied!" : "📋 Copy Summary"}
-                  </button>
-                </div>
+              {/* Cloud Sync Status */}
+              <div className="group-sync-pill">
+                <span className="pulse-dot"></span>
+                <span>
+                  {isSupabaseConfigured
+                    ? "Supabase Realtime Cloud Sync Active"
+                    : "Local Multi-Tab Realtime Sync Active"}
+                </span>
               </div>
             </div>
           </div>

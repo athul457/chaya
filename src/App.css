@@ -3816,6 +3816,15 @@ input {
   color: #991b1b;
 }
 
+.group-active-members-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+}
+
 .group-active-grid {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
